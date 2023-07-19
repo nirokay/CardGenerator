@@ -1,0 +1,2 @@
+var
+    resourcesPath*: string = "./resources/"
