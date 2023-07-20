@@ -1,18 +1,10 @@
-import std/[os, tables, json, options, strutils, strformat]
+import std/[os, tables, json, options, strutils]
 import ./globals
-
 
 type
     ConfigFile* = object
         checkCards*: Option[seq[string]]
-
-    CardColour* = object
-        baseOverride*: Option[string]
-        fontOverride*: Option[string]
-
-    CardColourData* = object
-        cards*: seq[string]
-        overrides*: CardColour
+        fontsize*: Option[int]
 
 
 var
@@ -54,11 +46,10 @@ proc parseResourceDirectory*() =
 
     # QoL procs:
     proc hasOverride(splitName: seq[string]): bool =
-        echo splitName
-        if splitName[1] notin ["", "png", "ttf"]: return true
+        if splitName[1] notin ["", "png", "ttf", "otf"]: return true
 
-    proc warn(override, what: string) =
-        echo &"Colour '{override}' does not exist, however attempted to override {what}!"
+    # proc warn(override, what: string) =
+    #     echo &"Colour '{override}' does not exist, however attempted to override {what}!"
 
     # Overriding:
     type OverrideType = enum
@@ -117,4 +108,4 @@ proc parseColourDirectories*(): Table[string, CardColourData] =
                 cardName: string = fullName.split('.')[0]
             data.cards.add(cardName)
         result[colour] = data
-    echo result
+

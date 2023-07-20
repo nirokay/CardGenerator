@@ -1,5 +1,14 @@
 import std/[tables, options]
 
+type
+    CardColour* = object
+        baseOverride*: Option[string]
+        fontOverride*: Option[string]
+
+    CardColourData* = object
+        cards*: seq[string]
+        overrides*: CardColour
+
 var
     # Resources:
     resourcesDirectoryPath*: string = "./resources/"
@@ -10,9 +19,15 @@ var
         baseCard, baseFont: Option[string]
     ]
 
+    # Idk what to write in this comment... "Stuff"?... :
+    validImageFormats*: seq[string] = @["png", "svg"]
+
     # Options:
     checkCardValidity*: bool
     checkCardsCards*: seq[string]
+    imageOutputDirectory*: string = "./cards_output/"
+    globalFontSize*: int = 20
+    globalSafezone*: int = 0
 
 
 # File procs:

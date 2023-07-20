@@ -28,9 +28,11 @@ root_dir
 ## JSON config file structure
 
 ```json
-// Note: comments are not supported in json, but they are used here for documentation.
+// Note: comments are not supported in json, but they are used here for documentation purposes.
 {
-    "checkCards": ["Ace", "9"]   // OPTIONAL: only treat these files <name>.png as card images,
+    "checkCards": ["Ace", "9"],  // OPTIONAL: only treat these files <name>.png as card images,
                                  //           and throw an error, if any are missing for a colour.
+
+    "fontsize": 20               // OPTIONAL: font size used on all cards
 }
 ```

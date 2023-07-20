@@ -1,6 +1,6 @@
 import std/[os, parseopt, strutils, strformat, tables]
-import cardgeneratorpkg/[globals, resourceparser]
-export globals, resourceparser
+import cardgeneratorpkg/[globals, resourceparser, imagegenerator]
+export globals, resourceparser, imagegenerator
 
 
 when isMainModule:
@@ -41,7 +41,36 @@ when isMainModule:
     )
 
     newCommand(('d', "directory"), "Sets the resource directory.", proc(newPath: string) =
+        if not newPath.dirExists():
+            echo &"Resource directory '{newPath}' does not exist!"
+            quit(1)
         resourcesDirectoryPath = newPath
+    )
+
+    newCommand(('o', "output"), "Sets the output directory for final cards.", proc(newOutputPath: string) =
+        if not newOutputPath.dirExists():
+            try:
+                newOutputPath.createDir()
+            except OSError:
+                echo &"Could not create directory '{newOutputPath}'!"
+                quit(1)
+        imageOutputDirectory = newOutputPath
+    )
+
+    newCommand(('f', "fontsize"), "Sets the global font size for card images.", proc(newSize: string) =
+        try:
+            globalFontSize = newSize.parseInt()
+        except ValueError:
+            echo "Font size has to be an integer!"
+            quit(1)
+    )
+
+    newCommand(('s', "safezone"), "Sets the pixels from the corners, that should not be written to.", proc(newSafezone: string) =
+        try:
+            globalSafezone = newSafezone.parseInt()
+        except ValueError:
+            echo "Safezone has to be an integer!"
+            quit(1)
     )
 
 
@@ -62,4 +91,4 @@ when isMainModule:
     let cardData: Table[string, CardColourData] = parseColourDirectories()
 
     # Generate Images:
-    
+    generateImagesWith(cardData)
