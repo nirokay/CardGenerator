@@ -1,4 +1,6 @@
-import std/[os, parseopt, strutils, strformat]
+import std/[os, parseopt, strutils, strformat, tables]
+import cardgeneratorpkg/[globals, resourceparser]
+export globals, resourceparser
 
 
 when isMainModule:
@@ -11,8 +13,8 @@ when isMainModule:
 
 
     # Commandline commands:
-    var commands: seq[tuple[nameShort, nameLong, desc: string, call: proc()]]
-    proc newCommand(names: tuple[short: char, long: string], desc: string, call: proc()) =
+    var commands: seq[tuple[nameShort, nameLong, desc: string, call: proc(_: string) {.closure.}]]
+    proc newCommand(names: tuple[short: char, long: string], desc: string, call: proc(_: string)) =
         commands.add((
             nameShort: $names.short,
             nameLong: names.long,
@@ -20,7 +22,7 @@ when isMainModule:
             call: call
         ))
 
-    newCommand(('h', "help"), "Displays this help message.", proc() =
+    newCommand(('h', "help"), "Displays this help message and quits.", proc(_: string) =
         var cmdText: seq[string]
         for command in commands:
             cmdText.add(alignLeft(&"-{command.nameShort}, --{command.nameLong}", 24, ' ') & command.desc)
@@ -33,9 +35,13 @@ when isMainModule:
         quit(0)
     )
 
-    newCommand(('v', "version"), "Displays the program version.", proc() =
+    newCommand(('v', "version"), "Displays the program version and quits.", proc(_: string) =
         echo &"{programName} - v{programVersion}"
         quit(0)
+    )
+
+    newCommand(('d', "directory"), "Sets the resource directory.", proc(newPath: string) =
+        resourcesDirectoryPath = newPath
     )
 
 
@@ -48,6 +54,12 @@ when isMainModule:
 
         of cmdLongOption, cmdShortOption:
             for cmd in commands:
-                if key == cmd.nameShort or key == cmd.nameLong: cmd.call()
+                if key == cmd.nameShort or key == cmd.nameLong: cmd.call(value)
 
+    # Parse resources:
+    parseConfigFile()
+    parseResourceDirectory()
+    let cardData: Table[string, CardColourData] = parseColourDirectories()
 
+    # Generate Images:
+    
