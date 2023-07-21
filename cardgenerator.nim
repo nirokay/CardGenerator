@@ -111,7 +111,6 @@ when isMainModule:
                 if key == cmd.nameShort or key == cmd.nameLong: cmd.call(value)
 
     # Parse resources:
-    parseConfigFile()
     parseResourceDirectory()
     let cardData: Table[string, CardColourData] = parseColourDirectories()
 

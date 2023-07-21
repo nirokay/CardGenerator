@@ -4,16 +4,16 @@ CardGenerator generates playing cards from a couple of resources (such as base b
 
 ## Usage
 
-```
+```txt
 -h, --help              Displays this help message and quits.
 -v, --version           Displays the program version and quits.
 -d, --directory         Sets the resource directory.
 -o, --output            Sets the output directory for final cards.
 -f, --fontsize          Sets the global font size for card images.
--s, --safezone          Sets the pixels-indents from the corners.
+-z, --safezone          Sets the pixels-indents from the corners.
+-s, --shadow            Sets if the text should have shadows (slow).
+-c, --shadowcolour      Sets the shadow colour. Four values (rgba) seperated by commas (example: '255,255,255,255').
 ```
-
-
 
 ## Resource directory structure
 
@@ -69,16 +69,24 @@ root: ./
      | > Ace.png
 ```
 
-## JSON config file structure
+## Examples
 
-Not yet implemented! Use command line arguments instead.
+### Base cards
 
-```json
-// Note: comments are not supported in json, but they are used here for documentation purposes.
-{
-    "checkCards": ["Ace", "9"],  // OPTIONAL: only treat these files <name>.png as card images,
-                                 //           and throw an error, if any are missing for a colour.
+| Default                                                | Red                                                    | Blue
+|:------------------------------------------------------:|:------------------------------------------------------:|:--------------------------------------------------------:
+| ![default base card](examples/resources/base_card.png) | ![red base card](examples/resources/base_card.red.png) | ![blue base card](examples/resources/base_card.blue.png)
 
-    "fontsize": 20               // OPTIONAL: font size used on all cards
-}
-```
+### Characters
+
+| \#   | 9-Card                                          | Ace Card                                               |
+|:----:|:-----------------------------------------------:|:------------------------------------------------------:|
+| Blue | ![blue 9](./examples/resources/blue/Ace.png)    | ![blue ace](./examples/resources/blue/9.png)           |
+| Red  | ![red 9](./examples/resources/red/Ace.png)      | ![red ace](./examples/resources/red/9.png)             |
+
+### Final cards
+
+| \#   | 9-Card                                          | Ace Card                                               |
+|:----:|:-----------------------------------------------:|:------------------------------------------------------:|
+| Blue | ![blue 9](./examples/output/blue/Ace.png)       | ![blue ace](./examples/output/blue/9.png)              |
+| Red  | ![red 9](./examples/output/red/Ace.png)         | ![red ace](./examples/output/red/9.png)                |

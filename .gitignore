@@ -5,3 +5,6 @@
 cardgenerator
 *.out
 *.exe
+
+# Krita:
+examples/krita

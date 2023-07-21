@@ -1,31 +1,13 @@
-import std/[os, tables, json, options, strutils]
+import std/[os, tables, options, strutils]
 import ./globals
 
-type
-    ConfigFile* = object
-        checkCards*: Option[seq[string]]
-        fontsize*: Option[int]
-
-
-var
-    config: ConfigFile
-    cardColours: Table[string, CardColour]
+var cardColours: Table[string, CardColour]
 
 
 proc init(name: string) =
     ## Inits a card colour.
     if not cardColours.hasKey(name):
         cardColours[name] = CardColour()
-
-
-proc parseConfigFile*() =
-    ## Parses the config file and writes values to global vars.
-    if not getConfigFilePath().fileExists(): return
-    try:
-        config = getConfigFilePath().readFile().parseJson().to(ConfigFile)
-    except CatchableError, Defect:
-        echo "Invalid json file:\n" & getCurrentExceptionMsg()
-        quit(1)
 
 
 proc parseResourceDirectory*() =
@@ -46,7 +28,7 @@ proc parseResourceDirectory*() =
 
     # QoL procs:
     proc hasOverride(splitName: seq[string]): bool =
-        if splitName[1] notin ["", "png", "ttf", "otf"]: return true
+        if splitName[1] notin ["", "png", "ttf", "otf", "svg"]: return true
 
     # proc warn(override, what: string) =
     #     echo &"Colour '{override}' does not exist, however attempted to override {what}!"
