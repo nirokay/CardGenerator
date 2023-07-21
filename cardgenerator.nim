@@ -65,12 +65,37 @@ when isMainModule:
             quit(1)
     )
 
-    newCommand(('s', "safezone"), "Sets the pixels from the corners, that should not be written to.", proc(newSafezone: string) =
+    newCommand(('z', "safezone"), "Sets the pixels-indents from the corners.", proc(newSafezone: string) =
         try:
             globalSafezone = newSafezone.parseInt()
         except ValueError:
             echo "Safezone has to be an integer!"
             quit(1)
+    )
+
+    newCommand(('s', "shadow"), "Sets if the text should have shadows (slow).", proc(_: string) =
+        drawShadowOnTextLayer = true
+    )
+
+    newCommand(('c', "shadowcolour"), "Sets the shadow colour. Four values (rgba) seperated by commas (example: '255,255,255,255').", proc(values: string) =
+        var valuesAsStrings: seq[string] = values.split(',')
+
+        # Populate array, if needed:
+        while valuesAsStrings.len() < 3:
+            valuesAsStrings.add("0")
+        if valuesAsStrings.len() < 4:
+            valuesAsStrings.add("255")
+
+        for i, value in valuesAsStrings:
+            var shadowInt: uint8
+            try:
+                shadowInt = uint8 valuesAsStrings[i].parseInt()
+            except ValueError:
+                echo &"Passed shadow value of '{valuesAsStrings[i]}' is not a valid unsigned 8-bit integer! Using '0' instead"
+                shadowInt = 0
+            finally:
+                shadowColours[i] = shadowInt
+        echo &"Using rgba({shadowColours[0]}, {shadowColours[1]}, {shadowColours[2]}, {shadowColours[3]}) as shadow colour!"
     )
 
 

@@ -28,6 +28,11 @@ var
     imageOutputDirectory*: string = "./cards_output/"
     globalFontSize*: int = 20
     globalSafezone*: int = 0
+    widthOffset*: int = 50
+
+    # Shaders:
+    drawShadowOnTextLayer*: bool
+    shadowColours*: array[4, uint8]
 
 
 # File procs:

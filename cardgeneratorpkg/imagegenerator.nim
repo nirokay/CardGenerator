@@ -27,7 +27,6 @@ proc generateImagesWith*(cardData: Table[string, CardColourData]) =
         colours[colour] = colourData.getDataForColour()
 
     # Generate images:
-    echo colours
     echo "Generating cards..."
     for colour, data in colours:
         echo "Generating cards coloured " & colour & ":"
@@ -38,7 +37,7 @@ proc generateImagesWith*(cardData: Table[string, CardColourData]) =
                 overlay: Image = readImage(getResourcePath() & colour & "/" & card & ".png")
                 font: Font = data.fontPath.readFont()
 
-            font.size = globalFontSize.toFloat()
+            # Draw overlay image onto image:
             image.draw(
                 overlay,
                 # Center overlay image:
@@ -50,22 +49,52 @@ proc generateImagesWith*(cardData: Table[string, CardColourData]) =
                 )
             )
 
+            # Render text to image:
+            var textImage: Image = newImage(image.width, image.height)
+            font.size = globalFontSize.toFloat()
             proc writeText(cardName: string) =
                 # Left:
-                image.fillText(
-                    font.typeset(cardName, vec2(image.width.toFloat() / 2, image.height.toFloat() / 2), LeftAlign, TopAlign),
-                    translate(vec2(globalSafezone.toFloat(), globalSafezone.toFloat()))
+                textImage.fillText(
+                    font.typeset(cardName,
+                    vec2(
+                        toFloat(textImage.width), toFloat(textImage.height)),
+                        LeftAlign, TopAlign
+                    ),
+                    translate(
+                        vec2(float globalSafezone, float globalSafezone)
+                    )
                 )
                 # Right:
-                image.fillText(
-                    font.typeset(cardName, vec2(image.width.toFloat(), image.height.toFloat()), RightAlign, TopAlign),
-                    translate(vec2(globalSafezone.toFloat() * -2, globalSafezone.toFloat()))
+                textImage.fillText(
+                    font.typeset(cardName,
+                    vec2(
+                        toFloat(textImage.width), toFloat(textImage.height)),
+                        RightAlign, TopAlign
+                    ),
+                    translate(
+                        vec2(float -globalSafezone, float globalSafezone)
+                    )
                 )
 
+            # Write text onto text image:
             for _ in 1..2:
                 card.writeText()
-                image.rotate90()
-                image.rotate90()
+                textImage.rotate90()
+                textImage.rotate90()
+
+
+            # Apply shaders to text image:
+            if drawShadowOnTextLayer:
+                let shadow = textImage.shadow(
+                    offset = vec2(2, 2),
+                    spread = 2,
+                    blur = 10,
+                    color = rgba(shadowColours[0], shadowColours[1], shadowColours[2], shadowColours[3])
+                )
+                image.draw(shadow)
+
+            # Combine text image with image:
+            image.draw(textImage)
 
             let
                 outputDir: string = &"{imageOutputDirectory}/{colour}/"
