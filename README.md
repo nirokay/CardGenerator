@@ -11,7 +11,7 @@ CardGenerator generates playing cards from a couple of resources (such as base b
 -o, --output            Sets the output directory for final cards.
 -f, --fontsize          Sets the global font size for card images.
 -z, --safezone          Sets the pixels-indents from the corners.
--s, --shadow            Sets if the text should have shadows (slow).
+-s, --shadow            Toggles if the text should have shadows (slow).
 -c, --shadowcolour      Sets the shadow colour. Four values (rgba) seperated by commas (example: '255,255,255,255').
 ```
 

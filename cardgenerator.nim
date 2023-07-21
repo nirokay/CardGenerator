@@ -73,7 +73,7 @@ when isMainModule:
             quit(1)
     )
 
-    newCommand(('s', "shadow"), "Sets if the text should have shadows (slow).", proc(_: string) =
+    newCommand(('s', "shadow"), "Toggles if the text should have shadows (slow).", proc(_: string) =
         drawShadowOnTextLayer = true
     )
 
