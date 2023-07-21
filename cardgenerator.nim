@@ -7,7 +7,7 @@ when isMainModule:
     # Program information:
     const
         programName: string = "CardGenerator"
-        programVersion: string = "0.1.0"
+        programVersion: string = "1.0.0"
         programAuthors: seq[string] = @["nirokay"]
         programSource: string = "https://github.com/nirokay/CardGenerator"
 
