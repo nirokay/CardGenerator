@@ -79,14 +79,14 @@ root: ./
 
 ### Characters
 
-| \#   | 9-Card                                          | Ace Card                                               |
+| \#   | Ace-Card                                        | 9-Card                                                 |
 |:----:|:-----------------------------------------------:|:------------------------------------------------------:|
 | Blue | ![blue 9](./examples/resources/blue/Ace.png)    | ![blue ace](./examples/resources/blue/9.png)           |
 | Red  | ![red 9](./examples/resources/red/Ace.png)      | ![red ace](./examples/resources/red/9.png)             |
 
 ### Final cards
 
-| \#   | 9-Card                                          | Ace Card                                               |
+| \#   | Ace-Card                                        | 9-Card                                                 |
 |:----:|:-----------------------------------------------:|:------------------------------------------------------:|
 | Blue | ![blue 9](./examples/output/blue/Ace.png)       | ![blue ace](./examples/output/blue/9.png)              |
 | Red  | ![red 9](./examples/output/red/Ace.png)         | ![red ace](./examples/output/red/9.png)                |
