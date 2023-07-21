@@ -1,4 +1,4 @@
-import std/[os, tables, options, strutils]
+import std/[os, tables, options, strutils, strformat]
 import ./globals
 
 var cardColours: Table[string, CardColour]
@@ -37,6 +37,9 @@ proc parseResourceDirectory*() =
     type OverrideType = enum
         baseCard, baseFont
     proc attemptOverride(colour: string, what: OverrideType, with: tuple[kind: PathComponent, path: string]) =
+        if not cardColours.hasKey(colour):
+            echo &"Colour '{colour}' does not have a directory, yet attempted to override '{$what}'! Skipping..."
+            return
         case what:
         of baseCard: cardColours[colour].baseOverride = some with.path
         of baseFont: cardColours[colour].fontOverride = some with.path

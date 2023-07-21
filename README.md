@@ -90,3 +90,5 @@ root: ./
 |:----:|:-----------------------------------------------:|:------------------------------------------------------:|
 | Blue | ![blue 9](./examples/output/blue/Ace.png)       | ![blue ace](./examples/output/blue/9.png)              |
 | Red  | ![red 9](./examples/output/red/Ace.png)         | ![red ace](./examples/output/red/9.png)                |
+
+Generated using `./cardgenerator -o:./examples/output -f:100 -d:./examples/resources -s -c:255,255,255,255 -z:50`!
