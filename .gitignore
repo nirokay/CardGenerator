@@ -1,6 +1,9 @@
 # Project management:
 .TODO*
 
+# Docs:
+docs
+
 # Binaries:
 cardgenerator
 *.out

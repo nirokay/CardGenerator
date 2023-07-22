@@ -1,14 +1,26 @@
+## Description
+## ===============
+##
+## This module actually generates the final image files.
+
 import std/[os, options, tables, strformat]
 import pixie
 import ./globals
 
 type
     DataForCardColour* = tuple
+        ## I ran out of unique names for this object. Its function is to be QoL
+        ## data storage for a colour.
+        ##
+        ## No more weird `Option` values. `baseImagePath` and `fontPath` are
+        ## now EITHER the global base OR colour-specific override.
         baseImagePath, fontPath: string
         cardNames: seq[string]
 
 
-proc getDataForColour(colourData: CardColourData): DataForCardColour =
+proc getDataForColour*(colourData: CardColourData): DataForCardColour =
+    ## Converts `CardColourData` to `DataForCardColour` for ease of use in the
+    ## `generateImagesWith()` proc.
     proc getOrDef(option: Option[string], default: string): string =
         if option.isSome(): return option.get()
         else: return default
@@ -20,6 +32,8 @@ proc getDataForColour(colourData: CardColourData): DataForCardColour =
 
 
 proc generateImagesWith*(cardData: Table[string, CardColourData]) =
+    ## Main proc in this module that accepts `Table[string, CardColourData]`
+    ## and uses this to generate all cards!
     var colours: Table[string, DataForCardColour]
 
     # Translate data for my sanity:

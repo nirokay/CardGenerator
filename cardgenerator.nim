@@ -1,3 +1,72 @@
+## CardGenerator documentation
+## ===========================
+##
+## This cli program generates playing-cards from the minimal amount of
+## resources:
+##
+## * card background image (refered here as base-card)
+## * at least one base font file
+## * your illustrations for the cards
+##
+##
+## Directory names
+## ===============
+##
+## Each directory in the resources dir is a seperate colour. You can have as
+## many colours as you wish.
+##
+##   **For example:**
+##
+##   The directories `blue`, `red`, `some_other_name` will all be
+##   interpreted as different colours.
+##
+## Inside these directories you put your card images (see 'File names' for that)
+##
+##
+## File names
+## ==========
+##
+## Colour-specific files
+## ---------------------
+##
+## These are files inside the colour directories (such as `./blue/`, `./red/`).
+## You can put your own illustrations on here, that will be placed onto the
+## middle of your finished card.
+##
+## Simply name them, what you want the card to say at the end.
+##
+##   **For example:**
+##
+##   A file called `Ace.png` will have `Ace` written in each cornor of the card.
+##   This makes silly stuff like config files for every card obsolete!
+##
+## "Global" files
+## --------------
+##
+## These include your standard stuff, like the base card, fonts, etc.
+##
+## File names have to be as is, otherwise the program gets confused, and that
+## is not nice towards the program...
+##
+## **Reserved file names:**
+##
+## * `base_card.png`
+## * `font.ttf` / `font.otf`
+##
+## Each colours' base card and/or font can be overridden. Just add a
+## `.[colour name]` between the identifier (`base_card`) and the file extention
+## (`.png`) -> `base_card.red.png`.
+##
+## This will override the base card for every red card!
+##
+## The same works with font files -> `font.red.ttf`
+##
+##
+## Detailed documentation on usage
+## ===============================
+##
+## For a more detailed deocumentation on usage, please refer to the [README on github](https://github.com/nirokay/CardGenerator#readme)
+
 import std/[os, parseopt, strutils, strformat, tables]
 import cardgeneratorpkg/[globals, resourceparser, imagegenerator]
 export globals, resourceparser, imagegenerator

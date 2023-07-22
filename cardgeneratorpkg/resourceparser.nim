@@ -1,3 +1,9 @@
+## Description
+## ===============
+##
+## This module parses the resource directory and converts files into
+## data used further on.
+
 import std/[os, tables, options, strutils, strformat]
 import ./globals
 
@@ -5,7 +11,7 @@ var cardColours: Table[string, CardColour]
 
 
 proc init(name: string) =
-    ## Inits a card colour.
+    ## Inits a card colour by creating a table key.
     if not cardColours.hasKey(name):
         cardColours[name] = CardColour()
 
@@ -26,16 +32,14 @@ proc parseResourceDirectory*() =
         of pcFile, pcLinkToFile: files.add(obj)
         of pcDir, pcLinkToDir: name.init()
 
-    # QoL procs:
-    proc hasOverride(splitName: seq[string]): bool =
-        if splitName[1] notin ["", "png", "ttf", "otf", "svg"]: return true
-
-    # proc warn(override, what: string) =
-    #     echo &"Colour '{override}' does not exist, however attempted to override {what}!"
-
     # Overriding:
     type OverrideType = enum
         baseCard, baseFont
+
+    proc hasOverride(splitName: seq[string]): bool =
+        ## Checks if this is a valid file used for overriding.
+        if splitName[1] notin ["", "png", "ttf", "otf", "svg"]: return true
+
     proc attemptOverride(colour: string, what: OverrideType, with: tuple[kind: PathComponent, path: string]) =
         if not cardColours.hasKey(colour):
             echo &"Colour '{colour}' does not have a directory, yet attempted to override '{$what}'! Skipping..."
@@ -74,9 +78,9 @@ proc parseResourceDirectory*() =
         quit(1)
 
 
-# Parse all colour direcotries:
 proc parseColourDirectories*(): Table[string, CardColourData] =
-    ## Parses all colour directories and saves stuff to objects.
+    ## Parses all colour directories and saves stuff to object, ready for
+    ## the image generator to take over! :)
     ##
     ## Only call after at least calling `parseResourceDirectory()`!
     for colour, overrides in cardColours:
