@@ -52,8 +52,6 @@ root: ./
  |
  | > .some_file.txt      # dot-files are ignored!
  |
- | > config.json         # configs in json format
- |
  | > font.ttf            # font used on all cards
  | > font.red.ttf        # OPTIONAL: overrides font used on red cards
  |
