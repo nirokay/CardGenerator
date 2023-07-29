@@ -44,12 +44,30 @@ proc generateImagesWith*(cardData: Table[string, CardColourData]) =
     echo "Generating cards..."
     for colour, data in colours:
         echo "Generating cards coloured " & colour & ":"
+
+        # Load font:
+        var font: Font
+        try:
+            font = data.fontPath.readFont()
+        except PixieError as e:
+            echo &"\tFont Error: {colour} - Cannot load font file! " & e.msg
+            continue
+
+        # Generate each card:
         for card in data.cardNames:
             # Create Images:
             var
-                image: Image = data.baseImagePath.readImage()
-                overlay: Image = readImage(getResourcePath() & colour & "/" & card & ".png")
-                font: Font = data.fontPath.readFont()
+                image: Image
+                overlay: Image
+                textImage: Image
+
+            # Load images:
+            try:
+                image = data.baseImagePath.readImage()
+                overlay = readImage(getResourcePath() & colour & "/" & card & ".png")
+            except PixieError as e:
+                echo &"\tImage Error: {card} ({colour}) - Cannot load image file! " & e.msg
+                continue
 
             # Draw overlay image onto image:
             image.draw(
@@ -64,7 +82,7 @@ proc generateImagesWith*(cardData: Table[string, CardColourData]) =
             )
 
             # Render text to image:
-            var textImage: Image = newImage(image.width, image.height)
+            textImage = newImage(image.width, image.height)
             font.size = globalFontSize.toFloat()
             proc writeText(cardName: string) =
                 # Left:
@@ -96,8 +114,7 @@ proc generateImagesWith*(cardData: Table[string, CardColourData]) =
                 textImage.rotate90()
                 textImage.rotate90()
 
-
-            # Apply shaders to text image:
+            # Apply shaders to image:
             if drawShadowOnTextLayer:
                 let shadow = textImage.shadow(
                     offset = vec2(2, 2),

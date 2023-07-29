@@ -25,7 +25,7 @@ var
 
     # Shaders:
     drawShadowOnTextLayer*: bool ## Toggles if a shadow should be drawn (for card value).
-    shadowColours*: array[4, uint8] ## Shadow colour usef for shadow on card values.
+    shadowColours*: array[4, uint8] = [0, 0, 0, 255] ## Shadow colour usef for shadow on card values.
 
 
 # File procs:

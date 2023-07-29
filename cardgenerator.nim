@@ -147,24 +147,38 @@ when isMainModule:
     )
 
     newCommand(('c', "shadowcolour"), "Sets the shadow colour. Four values (rgba) seperated by commas (example: '255,255,255,255').", proc(values: string) =
-        var valuesAsStrings: seq[string] = values.split(',')
+        var
+            valuesAsStrings: seq[string] = values.split(',')
+            populatedValues: seq[string]
 
-        # Populate array, if needed:
-        while valuesAsStrings.len() < 3:
-            valuesAsStrings.add("0")
-        if valuesAsStrings.len() < 4:
-            valuesAsStrings.add("255")
+        # Populate sequence, if needed:
+        case valuesAsStrings.len():
+        of 0:
+            echo "Assumimg shadow colour: opaque black"
+            populatedValues = @["0", "0", "0", "255"]
+        of 1:
+            echo "Assumimg shadow colour: *opaque grey-scale*"
+            populatedValues = @[valuesAsStrings[0], valuesAsStrings[0], valuesAsStrings[0], "255"]
+        of 2:
+            echo "Assumimg shadow colour: *grey-scale*"
+            populatedValues = @[valuesAsStrings[0], valuesAsStrings[0], valuesAsStrings[0], valuesAsStrings[1]]
+        of 3:
+            echo "Assumimg shadow colour: *opaque colour*"
+            populatedValues = @[valuesAsStrings[0], valuesAsStrings[1], valuesAsStrings[2], "255"]
+        else:
+            populatedValues = @[valuesAsStrings[0], valuesAsStrings[1], valuesAsStrings[2], valuesAsStrings[3]]
 
-        for i, value in valuesAsStrings:
+        # Parses colour values to byte:
+        for i, value in populatedValues:
             var shadowInt: uint8
             try:
-                shadowInt = uint8 valuesAsStrings[i].parseInt()
+                shadowInt = uint8 value.parseInt()
             except ValueError:
-                echo &"Passed shadow value of '{valuesAsStrings[i]}' is not a valid unsigned 8-bit integer! Using '0' instead"
+                echo &"\tPassed shadow value of '{value}' is not a valid unsigned 8-bit integer! Using '0' instead."
                 shadowInt = 0
             finally:
                 shadowColours[i] = shadowInt
-        echo &"Using rgba({shadowColours[0]}, {shadowColours[1]}, {shadowColours[2]}, {shadowColours[3]}) as shadow colour!"
+        echo "Using rgba(" & shadowColours.join(", ") & ") as shadow colour!"
     )
 
 
